@@ -1,6 +1,4 @@
 from http.server import BaseHTTPRequestHandler
-from urlparse import urlparse
-
 
 class handler(BaseHTTPRequestHandler):
 
@@ -8,6 +6,9 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        name = urlparse.parse_qs(urlparse.urlparse(self.path).query).get('name', "NULL")
+        data = [x for i,x in enumerate(text.split("?")[1].split("&")) if x.split("=")[0] == "name"]
+        name = "NULL"
+        if len(data) > 0:
+            name = data[0].split("=")[1]
         self.wfile.write(("Python: Hello %s!" % name).encode())
         return
